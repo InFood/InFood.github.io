@@ -1,6 +1,6 @@
 {
-    "name": "admin_web",
-    "short_name": "admin_web",
+    "name": "infood",
+    "short_name": "infood",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
