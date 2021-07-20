@@ -35335,11 +35335,12 @@ E.tw(k,5)
 s=3
 return P.a1(p.iG(k),$async$qF)
 case 3:o=e
-if(o.d===0||o.b!==200){q=j
+n=o.b
+E.tw(C.f.i(n),5)
+if(o.d===0||n!==200){q=j
 s=1
 break}n=o.x
 m=C.K.cp(0,n)
-E.tw(C.f.i(o.b),5)
 E.tw(B.awo(U.aux(o.e).c.a.h(0,"charset")).cp(0,n),5)
 l=C.aA.cp(0,m)
 n=J.aj(l)
