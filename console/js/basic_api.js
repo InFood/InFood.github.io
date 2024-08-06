@@ -3,26 +3,26 @@ const pageSize = 2;
 
 
 // for basic_api/restaurant.html
-function getRestaurants(){
+function getRestaurants() {
     var formValue = document.forms["searchRestaurant"];
     var word = formValue.elements.word.value;
     $("#restaurantTable").find('tbody').html("");
 
-    $("#searchRestaurant").ajaxSubmit(function(restaurants) {
-        for(var i in restaurants){
-            if(restaurants[i].restaurantName.indexOf(word) != -1){
+    $("#searchRestaurant").ajaxSubmit(function (restaurants) {
+        for (var i in restaurants) {
+            if (restaurants[i].restaurantName.indexOf(word) != -1) {
                 getRestaurantById(restaurants[i]);
             }
         };
     });
 }
 
-function getRestaurantById(restaurant){
+function getRestaurantById(restaurant) {
     $.ajax({
-        url: apiUrl+"api/v1/restaurant/"+restaurant.id,
+        url: apiUrl + "api/v1/restaurant/" + restaurant.id,
         context: document.body,
-    }).then((res)=>{
-        var row = $('<tr><td>' + restaurant.restaurantName + '</td><td>' + restaurant.phoneNumber+ '</td><td>' + restaurant.address  + '</td><td><pre><code>' + JSON.stringify(restaurant, null, '  ') + '</code></pre></td><td><pre><code>' + JSON.stringify(res, null, '  ') + '</code></pre></td></tr>') 
+    }).then((res) => {
+        var row = $('<tr><td>' + restaurant.restaurantName + '</td><td>' + restaurant.phoneNumber + '</td><td>' + restaurant.address + '</td><td><pre><code>' + JSON.stringify(restaurant, null, '  ') + '</code></pre></td><td><pre><code>' + JSON.stringify(res, null, '  ') + '</code></pre></td></tr>')
         $("#restaurantTable").find('tbody').append(row);
         $('#restaurantTable').trigger('footable_initialize');
     })
@@ -30,7 +30,8 @@ function getRestaurantById(restaurant){
 
 
 // for basic_api/post.html
-async function searchRestaurant(restaurantName){
+// move to js/post.js and modify the code to fit the new API
+/* async function searchRestaurant(restaurantName){
     var restaurantList = [];
     for(var i=0; i<pageSize; i++){
         await $.ajax({
@@ -120,4 +121,4 @@ async function SearchPostByUser(){
             postTable.trigger('footable_initialize'); 
         })
     }
-}
+} */
