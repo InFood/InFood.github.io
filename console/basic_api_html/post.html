@@ -34,7 +34,7 @@
                     <option value="Restaurant">Restaurant</option>
                     <option value="User">User</option>
                     <option value="Food-Item">Food-Item</option>
-                    <option value="Post ID">Post ID</option>
+                    <option value="Post-ID">Post ID</option>
                 </select>
             </div>
         </div>
@@ -44,17 +44,22 @@
                     <div class="ibox-title">
                         <h5 class="col-sm-12 text-center">Post</h5>
                     </div>
-                    <div class="ibox-content">
+                    <div class="ibox-content" id="post_content">
                         <div class="row">
                             <div class="col-sm-12">
                                 <form role="form" name="postRestaurantList" id="postRestaurantList"
                                     onsubmit="SearchPostByRestaurant()">
+                                    <label for="my_id">My ID</label>
                                     <div class="form-group">
-                                        <input type="text" name="word" placeholder="Search..." class="form-control">
+                                        <input type="text" name="my_id" placeholder="Search..." class="form-control">
+                                    </div>
+                                    <label for="my_id">Restaurant ID</label>
+                                    <div class="form-group">
+                                        <input type="text" name="restaurant_id" placeholder="Search..." class="form-control">
                                     </div>
                                     <div>
                                         <button class="btn btn-sm btn-primary pull-right m-t-n-xs"
-                                            type="submit"><strong>Search by restaurant</strong>
+                                            type="submit"><strong>Search</strong>
                                         </button>
                                     </div>
                                 </form>
@@ -65,8 +70,8 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-sm-12">
-                <table id="postTable" class="footable table table-stripped toggle-arrow-tiny overflow-auto"
+            <div class="col-sm-12 table-responsive">
+                <table id="postTable" class="footable table table-stripped toggle-arrow-tiny "
                     data-page-size="10">
                     <thead>
                         <tr>
@@ -114,10 +119,8 @@
 
     <script>
         $(document).ready(function () {
-
             $('.footable').footable();
             $('.footable2').footable();
-
         });
 
     </script>
