@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 
-    <title>Post</title>
+    <title>group</title>
     <meta name="keywords" content="">
     <meta name="description" content="">
 
@@ -18,7 +18,6 @@
 
     <link href="../css/animate.css" rel="stylesheet">
     <link href="../css/style.css?v=4.1.0" rel="stylesheet">
-    <link href="../css/post.css" rel="stylesheet">
 
 
 </head>
@@ -30,11 +29,10 @@
             <div class="col-sm-12" style="margin-bottom: 10px;">
                 <select name="getPostBy" id="getPostBy" class="form-control" onchange="postByChange()">
                     <option value="0">--</option>
-                    <option value="Followee">Followee</option>
+                    <option value="Keyword">Keyword</option>
+                    <option value="Owner">Owner</option>
                     <option value="Restaurant">Restaurant</option>
-                    <option value="User">User</option>
-                    <option value="Food-Item">Food-Item</option>
-                    <option value="Post-ID">Post ID</option>
+                    <option value="Group_id">Group ID</option>
                 </select>
             </div>
         </div>
@@ -42,9 +40,9 @@
             <div class="col-6">
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
-                        <h5 class="col-sm-12 text-center">Post</h5>
+                        <h5 class="col-sm-12 text-center">Group</h5>
                     </div>
-                    <div class="ibox-content" id="post_content">
+                    <div class="ibox-content" id="group_content">
 
                     </div>
                 </div>
@@ -52,22 +50,18 @@
         </div>
         <div class="row">
             <div class="col-sm-12 table-responsive">
-                <table id="postTable" class="footable table table-stripped toggle-arrow-tiny " data-page-size="5">
+                <table id="groupTable" class="footable table table-stripped toggle-arrow-tiny " data-page-size="5">
                     <thead>
                         <tr>
-                            <th data-name="user_id">User ID</th>
-                            <th data-name="restaurant_id">Restaurant ID</th>
-                            <th data-name="content">Content</th>
-                            <th data-name="rating">Rating</th>
-                            <th data-name="like_count">Like Count</th>
-                            <th data-name="reply_count">Reply Count</th>
-                            <th data-name="restaurant_name">Restaurant Name</th>
-                            <th data-name="user_display_name">User Display Name</th>
-                            <th data-name="latitude">Latitude</th>
-                            <th data-name="longitude">Longitude</th>
-                            <th data-name="create_time">Create Time</th>
-                            <th data-name="update_time">Update Time</th>
-                            <th data-name="images">Images</th>
+                            <th data-name="owner_report_num">owner_report_num</th>
+                            <th data-name="restaurant_report_num">restaurant_report_num</th>
+                            <th data-name="restaurant_num">restaurant_num</th>
+                            <th data-name="id">id</th>
+                            <th data-name="name">name</th>
+                            <th data-name="type">type</th>
+                            <th data-name="creator_id">creator_id</th>
+                            <th data-name="create_time">create_time</th>
+                            <th data-name="update_time">update_time</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -95,7 +89,7 @@
     <!-- 自定义js -->
     <script src="../js/content.js?v=1.0.0"></script>
     <script src="../js/basic_api.js"></script>
-    <script src="../js/post.js"></script>
+    <script src="../js/group.js"></script>
 
     <script>
         $(document).ready(function () {

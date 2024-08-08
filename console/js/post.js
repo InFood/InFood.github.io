@@ -170,6 +170,7 @@ function SearchPostByRestaurant() {
 
 function SearchPostByUser() {
     $("#postTable tbody").empty();
+    event.preventDefault();
     const myid = $("input[name=my_id]").val();
     const user_id = $("input[name=user_id]").val();
     try {
@@ -182,6 +183,7 @@ function SearchPostByUser() {
 
 function SearchPostByFoodItem() {
     $("#postTable tbody").empty();
+    event.preventDefault();
     const myid = $("input[name=my_id]").val();
     const fooditem_id = $("input[name=fooditem_id]").val();
     try {
@@ -194,6 +196,7 @@ function SearchPostByFoodItem() {
 
 function SearchPostByPost() {
     $("#postTable tbody").empty();
+    event.preventDefault();
     const myid = $("input[name=my_id]").val();
     const post_id = $("input[name=post_id]").val();
     console.log(myid, post_id);
