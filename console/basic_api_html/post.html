@@ -7,93 +7,82 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 
-    <title>User</title>
+    <title>Post</title>
     <meta name="keywords" content="">
     <meta name="description" content="">
 
-    <link rel="shortcut icon" href="favicon.ico"> <link href="../css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="../css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
     <link href="../css/font-awesome.css?v=4.4.0" rel="stylesheet">
     <link href="../css/plugins/footable/footable.core.css" rel="stylesheet">
 
     <link href="../css/animate.css" rel="stylesheet">
     <link href="../css/style.css?v=4.1.0" rel="stylesheet">
+    <link href="../css/post.css" rel="stylesheet">
+
 
 </head>
 
 <body class="gray-bg">
     <div class="wrapper wrapper-content">
         <div class="row">
-            <div class="col-sm-12 col-md-6">
-                <div class="ibox float-e-margins">
-                    <div class="ibox-title">
-                        <h5 class="col-sm-12 text-center">Post</h5>
-                    </div>
-                    <div class="ibox-content">
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <form role="form" name="postRestaurantList" id="postRestaurantList" onsubmit = "SearchPostByRestaurant();return false;">
-                                    <div class="form-group">
-                                        <input type="text" name="word" placeholder="Search..." class="form-control">
-                                    </div>
-                                    <div>
-                                        <button class="btn btn-sm btn-primary pull-right m-t-n-xs" type="submit"><strong>Search by restaurant</strong>
-                                        </button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <!-- select for search by -->
+            <div class="col-sm-12" style="margin-bottom: 10px;">
+                <select name="getPostBy" id="getPostBy" class="form-control" onchange="postByChange()">
+                    <option value="0">--</option>
+                    <option value="Followee">Followee</option>
+                    <option value="Restaurant">Restaurant</option>
+                    <option value="User">User</option>
+                    <option value="Food-Item">Food-Item</option>
+                    <option value="Post-ID">Post ID</option>
+                </select>
             </div>
-            <div class="col-sm-12 col-md-6">
-                <div class="ibox float-e-margins">
-                    <div class="ibox-title">
-                        <h5 class="col-sm-12 text-center">Post</h5>
-                    </div>
-                    <div class="ibox-content">
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <form role="form" name="postUserList" id="postUserList" onsubmit = "SearchPostByUser();return false;">
-                                    <div class="form-group">
-                                        <input type="text" name="word" placeholder="Search..." class="form-control">
-                                    </div>
-                                    <div>
-                                        <button class="btn btn-sm btn-primary pull-right m-t-n-xs" type="submit"><strong>Search by user</strong>
-                                        </button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>    
+        </div>
         <div class="row">
-            <div class="col-sm-12">
-                <table  id="postTable" class="footable table table-stripped toggle-arrow-tiny" data-page-size="10">
-                    <thead>
-                    <tr>
+            <div class="col-6">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5 class="col-sm-12 text-center">Post</h5>
+                    </div>
+                    <div class="ibox-content" id="post_content">
 
-                        <th data-toggle="true">name</th>
-                        <th>content</th>
-                        <th>create time</th>
-                        <th>update time</th>
-                        <th data-hide="all">Detail</th>
-                    </tr>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12 table-responsive">
+                <table id="postTable" class="footable table table-stripped toggle-arrow-tiny " data-page-size="5">
+                    <thead>
+                        <tr>
+                            <th data-name="user_id">User ID</th>
+                            <th data-name="restaurant_id">Restaurant ID</th>
+                            <th data-name="content">Content</th>
+                            <th data-name="rating">Rating</th>
+                            <th data-name="like_count">Like Count</th>
+                            <th data-name="reply_count">Reply Count</th>
+                            <th data-name="restaurant_name">Restaurant Name</th>
+                            <th data-name="user_display_name">User Display Name</th>
+                            <th data-name="latitude">Latitude</th>
+                            <th data-name="longitude">Longitude</th>
+                            <th data-name="create_time">Create Time</th>
+                            <th data-name="update_time">Update Time</th>
+                            <th data-name="images">Images</th>
+                        </tr>
                     </thead>
                     <tbody>
                     </tbody>
                     <tfoot>
-                    <tr>
-                        <td colspan="5">
-                            <ul class="pagination pull-right"></ul>
-                        </td>
-                    </tr>
+                        <tr>
+                            <td colspan="8">
+                                <ul class="pagination pull-right"></ul>
+                            </td>
+                        </tr>
                     </tfoot>
                 </table>
             </div>
         </div>
-        
+
 
     </div>
 
@@ -106,17 +95,16 @@
     <!-- 自定义js -->
     <script src="../js/content.js?v=1.0.0"></script>
     <script src="../js/basic_api.js"></script>
-    
-    <script>
-        $(document).ready(function() {
+    <script src="../js/post.js"></script>
 
+    <script>
+        $(document).ready(function () {
             $('.footable').footable();
             $('.footable2').footable();
-
         });
 
-    </script>    
-    
+    </script>
+
 
 </body>
 
