@@ -1,5 +1,4 @@
-// const URL = "http://infood-backend-python-env.eba-wf3vms2a.ap-northeast-1.elasticbeanstalk.com/";
-const URLcus = "/api/";
+const URLcus = "http://infood-backend-python-env.eba-wf3vms2a.ap-northeast-1.elasticbeanstalk.com/";
 // event
 // search by change event
 
@@ -155,53 +154,53 @@ async function SearchPostByFollowee() {
     }
 }
 
-function SearchPostByRestaurant() {
+async function SearchPostByRestaurant() {
     $("#postTable tbody").empty();
     event.preventDefault();
     const myid = $("input[name=my_id]").val();
     const restaurant_id = $("input[name=restaurant_id]").val();
     try {
-        const response = getPostByRestaurantId(myid, restaurant_id);
+        const response = await getPostByRestaurantId(myid, restaurant_id);
         appendPost(response.post_list);
     } catch (error) {
         alert(error);
     }
 }
 
-function SearchPostByUser() {
+async function SearchPostByUser() {
     $("#postTable tbody").empty();
     event.preventDefault();
     const myid = $("input[name=my_id]").val();
     const user_id = $("input[name=user_id]").val();
     try {
-        const response = getPostByUserId(myid, user_id);
+        const response = await getPostByUserId(myid, user_id);
         appendPost(response.post_list);
     } catch (error) {
         alert(error);
     }
 }
 
-function SearchPostByFoodItem() {
+async function SearchPostByFoodItem() {
     $("#postTable tbody").empty();
     event.preventDefault();
     const myid = $("input[name=my_id]").val();
     const fooditem_id = $("input[name=fooditem_id]").val();
     try {
-        const response = getPostByFoodItemId(myid, fooditem_id);
+        const response = await getPostByFoodItemId(myid, fooditem_id);
         appendPost(response.post_list);
     } catch (error) {
         alert(error);
     }
 }
 
-function SearchPostByPost() {
+async function SearchPostByPost() {
     $("#postTable tbody").empty();
     event.preventDefault();
     const myid = $("input[name=my_id]").val();
     const post_id = $("input[name=post_id]").val();
     console.log(myid, post_id);
     try {
-        const response = getPostByPostId(myid, post_id);
+        const response = await getPostByPostId(myid, post_id);
         appendPost(response.post_list);
     } catch (error) {
         alert(error);
