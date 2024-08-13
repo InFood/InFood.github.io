@@ -20,7 +20,7 @@
 
 </head>
 
-<body class="gray-bg" onload="OnLoad();">
+<body class="gray-bg">
     <div class="wrapper wrapper-content">
         <div class="row">
             <div class="col-sm-12">
@@ -31,9 +31,14 @@
                     <div class="ibox-content">
                         <div class="row">
                             <div class="col-sm-12">
-                                <form role="form" name="searchUser" id="searchUser" onsubmit = "formSearchUser();return false;">
+                                <form role="form" name="searchUser" id="searchUser" onsubmit = "SearchUserByUserId();return false;">
+                                    <label for="my_id">My ID</label>
                                     <div class="form-group">
-                                        <input type="text" name="word" placeholder="Search..." class="form-control" oninput="searchUserOnInput();">
+                                        <input type="text" name="my_id" placeholder="Search..." class="form-control">
+                                    </div>
+                                    <label for="uaer_id">User ID</label>
+                                    <div class="form-group">
+                                        <input type="text" name="user_id" placeholder="Search..." class="form-control">
                                     </div>
                                     <div>
                                         <button class="btn btn-sm btn-primary pull-right m-t-n-xs" id="searchUserBtn" type="submit"><strong>Search</strong>
@@ -47,22 +52,41 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-sm-12">
-                <table  id="userTable" class="footable table table-stripped toggle-arrow-tiny" data-page-size="10">
+            <div class="col-sm-12 table-responsive">
+                <table  id="userTable" class="footable table table-stripped toggle-arrow-tiny" data-page-size="5">
                     <thead>
                     <tr>
-
-                        <th data-toggle="true">displayName</th>
-                        <th>userName</th>
-                        <th data-hide="all">ID Detail</th>
-                        <th data-hide="all">FirebaseID Detail</th>
+                        <th data-name="fb_id">FB ID</th>
+                        <th data-name="in_id">In ID</th>
+                        <th data-name="username">UserName</th>
+                        <th data-name="firebase_id">Firebase ID</th>
+                        <th data-name="introduction">Introduction</th>
+                        <th data-name="display_name">Display Name</th>
+                        <th data-name="birthdate">Birthdate</th>
+                        <th data-name="email">Email</th>
+                        <th data-name="gender">Gender</th>
+                        <th data-name="hometown">Hometown</th>
+                        <th data-name="phonenumber">Phonenumber</th>
+                        <th data-name="residence">Residence</th>
+                        <th data-name="id">ID</th>
+                        <th data-name="images">Images</th>
+                        <th data-name="width">Width</th>
+                        <th data-name="height">Height</th>
+                        <th data-name="tags">Tag</th>
+                        <th data-name="create_time">Create Time</th>
+                        <th data-name="update_time">Update Time</th>
+                        <th data-name="follower_count">Follower Count</th>
+                        <th data-name="followee_count">Followee Count</th>
+                        <th data-name="post_count">Post Count</th>
+                        <th data-name="is_follower">Is Follower</th>
+                        <th data-name="is_followee">Is Followee</th>
                     </tr>
                     </thead>
                     <tbody>
                     </tbody>
                     <tfoot>
                     <tr>
-                        <td colspan="5">
+                        <td colspan="8">
                             <ul class="pagination pull-right"></ul>
                         </td>
                     </tr>
