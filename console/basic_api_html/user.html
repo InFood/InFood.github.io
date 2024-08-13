@@ -23,30 +23,25 @@
 <body class="gray-bg">
     <div class="wrapper wrapper-content">
         <div class="row">
+            <!-- select for search by -->
+            <div class="col-sm-12" style="margin-bottom: 10px;">
+                <select name="getUserBy" id="getUserBy" class="form-control" onchange="userByChange()">
+                    <option value="0">--</option>
+                    <option value="UserID">User ID</option>
+                    <option value="FirebaseID">Firebase ID</option>
+                    <option value="Followee">Followee</option>
+                    <option value="Restaurant">Follower</option>
+                </select>
+            </div>
+        </div>
+        <div class="row">
             <div class="col-sm-12">
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
                         <h5 class="col-sm-12 text-center">User</h5>
                     </div>
-                    <div class="ibox-content">
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <form role="form" name="searchUser" id="searchUser" onsubmit = "SearchUserByUserId();return false;">
-                                    <label for="my_id">My ID</label>
-                                    <div class="form-group">
-                                        <input type="text" name="my_id" placeholder="Search..." class="form-control">
-                                    </div>
-                                    <label for="uaer_id">User ID</label>
-                                    <div class="form-group">
-                                        <input type="text" name="user_id" placeholder="Search..." class="form-control">
-                                    </div>
-                                    <div>
-                                        <button class="btn btn-sm btn-primary pull-right m-t-n-xs" id="searchUserBtn" type="submit"><strong>Search</strong>
-                                        </button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
+                    <div class="ibox-content" id="user_content">
+
                     </div>
                 </div>
             </div>
