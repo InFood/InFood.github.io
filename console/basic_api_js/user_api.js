@@ -1,95 +1,262 @@
-const apiUrl = "https://in-food.herokuapp.com/";
-const pageSize = 2;
+const URLcus = "http://infood-backend-python-env.eba-wf3vms2a.ap-northeast-1.elasticbeanstalk.com/";
 
-function OnLoad(){
-    document.forms["searchUser"].word.value = sessionStorage.getItem("searchUser");
-}
-
-function searchUserOnInput(){
-    var word = document.forms["searchUser"].elements.word.value;
-    sessionStorage.setItem("searchUser", word);
-}
-
-
-function formSearchUser(){
-    var formValue = document.forms["searchUser"];
-    var word = formValue.elements.word.value;
-    $("#userTable").find('tbody').html("");
-    document.getElementById("searchUserBtn").disabled = true;
-
-    searchUserApi(word).then(userList=>{
-        
-        if (userList.length == 0){
-            var row = $('<tr><td>無資料</td></tr>') 
-            $("#userTable").find('tbody').append(row);
-            document.getElementById("searchUserBtn").disabled = false;
-        }
-        else{
-            var rows = [];
-            userList.forEach(user => {
-                getUserProfileByIdApi(user.userId).then(profile=>{
-                    document.getElementById("searchUserBtn").disabled = true;
-                    getUserByFirebaseIdApi(profile.firebaseId).then(detail=>{
-                    var row = $('<tr><td>' + user.displayName + '</td><td>' + user.username  + '</td><td><pre><code>' + JSON.stringify(profile, null, '  ') + '</code></pre></td><td><pre><code>' + JSON.stringify(detail, null, '  ') + '</code></pre></td></tr>') 
-                    $("#userTable").find('tbody').append(row);
-                    $('#userTable').trigger('footable_initialize');
-                    document.getElementById("searchUserBtn").disabled = false;
-                    });
-                });
-            });  
-
-        }
-    })
-
-    
-}
-
-function getMyProfileByIdApi(id){
-    return $.ajax({
-        url: apiUrl + "api/v1/user/my/" + id,
-        context: document.body,
-        method: "GET",
-    });
-}
-
-function getUserProfileByIdApi(id){
-    return $.ajax({
-        url: apiUrl + "api/v1/user",
-        context: document.body,
-        method: "GET",
-        data:{
-            "myId": "20900092-bc18-400b-aa26-f1eba5c52d20", // temp add: fix id
-            "userId": id
-        }
-    });
-}
-
-function getUserByFirebaseIdApi(id){
-    return $.ajax({
-        url: apiUrl + "api/v1/user/firebaseId/" + id,
-        context: document.body,
-        method: "GET",
-    });
-}
-
-async function searchUserApi(word){
-    var userList = [];
-    for(var i=0; i<pageSize; i++){
-        await $.ajax({
-            url: apiUrl + "api/v1/user/search",
-            context: document.body,
+// get user by user id /api/v1/user/{user_id} needed myid
+async function getUserByUserId(myid, userId) {
+    try {
+        const response = await $.ajax({
+            url: URLcus + "api/v1/user/" + userId,
             method: "GET",
-            data:{
-                "name": word,
-                "myId": "20900092-bc18-400b-aa26-f1eba5c52d20", // temp add: fix id
-                "page": i,
-                "size": pageSize
-                }
-        }).then(res=>{
-            if(res.userVOList){
-                userList = userList.concat(res.userVOList);
+            headers: {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*",
+            },
+            data: {
+                "my_id": myid
             }
         });
+        return response;
     }
-    return userList;
+    catch (error) {
+        throw error;
+    }
+}
+
+// get user by user id /api/v1/user/{user_id}/followee needed myid
+async function getFolloweeByUserId(myid, userId) {
+    try {
+        const response = await $.ajax({
+            url: URLcus + "api/v1/user/" + userId + "/followee",
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*",
+            },
+            data: {
+                "myId": myid
+            }
+        });
+        return response;
+    }
+    catch (error) {
+        throw error;
+    }
+}
+
+// get user by user id /api/v1/user/{user_id}/follower needed myid
+async function getFollowerByUserId(myid, userId) {
+    try {
+        const response = await $.ajax({
+            url: URLcus + "api/v1/user/" + userId + "/follower",
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*",
+            },
+            data: {
+                "myId": myid
+            }
+        });
+        return response;
+    }
+    catch (error) {
+        throw error;
+    }
+}
+
+// get user by firebase id /api/v1/user/firebase/{firebase_id}
+async function getUserByFirebaseId(firebase_id) {
+    try {
+        const response = await $.ajax({
+            url: URLcus + "api/v1/user/firebase/" + firebase_id,
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*",
+            },
+        });
+        return response;
+    }
+    catch (error) {
+        throw error;
+    }
+}
+
+// logic
+function appendUser(postUser) {
+    row = "";
+    postUser.forEach(element => {
+        const imagesHtml = element.images.map(image => `<img src="${image.photo_url}" alt="Image" width="100">`).join('');
+
+        row += `
+            <tr>
+                <td>${element.fb_id}</td>
+                <td>${element.in_id}</td>
+                <td>${element.username}</td>
+                <td>${element.firebase_id}</td>
+                <td>${element.introduction}</td>
+                <td>${element.display_name}</td>
+                <td>${element.birthdate}</td>
+                <td>${element.email}</td>
+                <td>${element.gender}</td>
+                <td>${element.hometown}</td>
+                <td>${element.phonenumber}</td>
+                <td>${element.residence}</td>
+                <td>${element.id}</td>
+                <td>${imagesHtml}</td>
+                <td>${element.width}</td>
+                <td>${element.height}</td>
+                <td>${element.tags}</td>
+                <td>${element.create_time}</td>
+                <td>${element.update_time}</td>
+                <td>${element.follower_count}</td>
+                <td>${element.followee_count}</td>
+                <td>${element.post_count}</td>
+                <td>${element.is_follower}</td>
+                <td>${element.is_followee}</td>
+            </tr>
+        `
+    });
+    $("#userTable tbody").append(row);
+    $("#userTable tbody").footable();
+}
+
+async function SearchUserByUserId() {
+    $("#userTable tbody").empty();
+    event.preventDefault();
+    const myid = $("input[name=my_id]").val();
+    const user_id = $("input[name=user_id]").val();
+    try {
+        const response = await getUserByUserId(myid, user_id);
+        appendUser([response]);
+    } catch (error) {
+        alert(error);
+    }
+}
+
+async function SearchUserByFirebaseId() {
+    $("#userTable tbody").empty();
+    event.preventDefault();
+    const firebase_id = $("input[name=firebase_id]").val();
+    try {
+        const response = await getUserByFirebaseId(firebase_id);
+        appendUser([response]);
+    } catch (error) {
+        alert(error);
+    }
+}
+
+async function SearchFolloweeByUserId() {
+    $("#userTable tbody").empty();
+    event.preventDefault();
+    const myid = $("input[name=my_id]").val();
+    const user_id = $("input[name=user_id]").val();
+    try {
+        const response = await getFolloweeByUserId(myid, user_id);
+        appendUser(response.users);
+    } catch (error) {
+        alert(error);
+    }
+}
+
+async function SearchFollowerByUserId() {
+    $("#userTable tbody").empty();
+    event.preventDefault();
+    const myid = $("input[name=my_id]").val();
+    const user_id = $("input[name=user_id]").val();
+    try {
+        const response = await getFollowerByUserId(myid, user_id);
+        appendUser(response.users);
+    } catch (error) {
+        alert(error);
+    }
+}
+
+// userByChange change the input search by
+function userByChange() {
+    const userBy = $('#getUserBy').val();
+    const userContent = {
+        "UserID": `
+            <div class="row">
+                <div class="col-sm-12">
+                    <form role="form" name="UserInfoByUserId" id="searchUser" onsubmit = "SearchUserByUserId();return false;">
+                        <label for="my_id">My ID</label>
+                        <div class="form-group">
+                            <input type="text" name="my_id" placeholder="Search..." class="form-control">
+                        </div>
+                        <label for="uaer_id">User ID</label>
+                        <div class="form-group">
+                            <input type="text" name="user_id" placeholder="Search..." class="form-control">
+                        </div>
+                        <div>
+                            <button class="btn btn-sm btn-primary pull-right m-t-n-xs" id="searchUserBtn" type="submit"><strong>Search</strong>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        `,
+        "FirebaseID": `
+            <div class="row">
+                <div class="col-sm-12">
+                    <form role="form" name="UserInfoByFirebaseId" onsubmit="SearchUserByFirebaseId()">
+                        <label for="firebase_id">Firebase ID</label>
+                        <div class="form-group">
+                            <input type="text" name="firebase_id" placeholder="Search..." class="form-control" required="required" >
+                        </div>
+                        <div>
+                            <button class="btn btn-sm btn-primary pull-right m-t-n-xs"
+                                type="submit"><strong>Search</strong>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>    
+        `,
+        "Followee": `
+            <div class="row">
+                <div class="col-sm-12">
+                    <form role="form" name="FolloweeListByUserId" onsubmit="SearchFolloweeByUserId()">
+                        <label for="my_id">My ID</label>
+                        <div class="form-group">
+                            <input type="text" name="my_id" placeholder="Search..." class="form-control">
+                        </div>
+                        <label for="uaer_id">User ID</label>
+                        <div class="form-group">
+                            <input type="text" name="user_id" placeholder="Search..." class="form-control">
+                        </div>
+                        <div>
+                            <button class="btn btn-sm btn-primary pull-right m-t-n-xs"
+                                type="submit"><strong>Search</strong>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>  
+        `, 
+        "Follower": `
+            <div class="row">
+                <div class="col-sm-12">
+                    <form role="form" name="FollowerListByUserId" onsubmit="SearchFollowerByUserId()">
+                        <label for="my_id">My ID</label>
+                        <div class="form-group">
+                            <input type="text" name="my_id" placeholder="Search..." class="form-control">
+                        </div>
+                        <label for="uaer_id">User ID</label>
+                        <div class="form-group">
+                            <input type="text" name="user_id" placeholder="Search..." class="form-control">
+                        </div>
+                        <div>
+                            <button class="btn btn-sm btn-primary pull-right m-t-n-xs"
+                                type="submit"><strong>Search</strong>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>   
+    `
+    }
+    // empty user_content
+    $('#user_content').empty();
+    // append user_content
+    $('#user_content').append(userContent[userBy]);
 }
