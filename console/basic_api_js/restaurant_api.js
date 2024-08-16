@@ -39,6 +39,56 @@ async function getRestaurantByOwnerId(owner_id) {
     }
 }
 
+// get restaurant list /api/v1/restaurant-list
+async function getRestaurantList() {
+    try {
+        const response = await $.ajax({
+            url: URLcus + "api/v1/restaurant-list",
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*",
+            }
+        });
+        return response;
+    }
+    catch (error) {
+        throw error;
+    }
+}
+
+// search restaurant by owner id /api/v1/restaurant/search
+async function getRestaurant(keyword, latitude, longitude, radius_km) {
+    try {
+        const data = {};
+        if (keyword) {
+            data.keyword = keyword;
+        }
+        if (latitude) {
+            data.latitude = latitude;
+        }
+        if (longitude) {
+            data.longitude = longitude;
+        }
+        if (radius_km) {
+            data.radius_km = radius_km;
+        }
+        const response = await $.ajax({
+            url: URLcus + "api/v1/restaurant/search/",
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*",
+            },
+            data: data
+        });
+        return response;
+    }
+    catch (error) {
+        throw error;
+    }
+}
+
 // logic
 function appendRestaurant(postRestaurant) {
     row = "";
@@ -94,6 +144,32 @@ async function SearchRestaurantByOwnerId() {
     }
 }
 
+async function SearchRestaurantList() {
+    $("#restaurantTable tbody").empty();
+    event.preventDefault();
+    try {
+        const response = await getRestaurantList();
+        appendRestaurant(response.restaurants);
+    } catch (error) {
+        alert(error);
+    }
+}
+
+async function SearchRestaurant() {
+    $("#restaurantTable tbody").empty();
+    event.preventDefault();
+    const keyword = $("input[name=keyword]").val();
+    const latitude = $("input[name=latitude]").val();
+    const longitude = $("input[name=longitude]").val();
+    const radius_km = $("input[name=radius_km]").val();
+    try {
+        const response = await getRestaurant(keyword, latitude, longitude, radius_km);
+        appendRestaurant(response.restaurants);
+    } catch (error) {
+        alert(error);
+    }
+}
+
 // resturantByChange change the input search by
 function restaurantByChange() {
     const restaurantBy = $('#getRestaurantBy').val();
@@ -133,6 +209,46 @@ function restaurantByChange() {
                     </form>
                 </div>
             </div>
+        `,
+        "List": `
+        <div class="row">
+            <div class="col-sm-12">
+                <form role="form" name="RestaurantList" onsubmit = "SearchRestaurantList();return false;">
+                    <div>
+                        <button class="btn btn-sm btn-primary pull-right m-t-n-xs" id="searchRestaurantBtn" type="submit"><strong>Search</strong>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        `,
+        "Search": `
+        <div class="row">
+            <div class="col-sm-12">
+                <form role="form" name="RestaurantSearch" onsubmit = "SearchRestaurant();return false;">
+                    <label for="keyword">Keyword</label>
+                    <div class="form-group">
+                        <input type="text" name="keyword" placeholder="Search..." class="form-control">
+                    </div>
+                    <label for="latitude">Latitude</label>
+                    <div class="form-group">
+                        <input type="text" name="latitude" placeholder="Search..." class="form-control">
+                    </div>
+                    <label for="longitude">Longitude</label>
+                    <div class="form-group">
+                        <input type="text" name="longitude" placeholder="Search..." class="form-control">
+                    </div>
+                    <label for="radius_km">Radius Km</label>
+                    <div class="form-group">
+                        <input type="text" name="radius_km" placeholder="Search..." class="form-control">
+                    </div>
+                    <div>
+                        <button class="btn btn-sm btn-primary pull-right m-t-n-xs" id="searchRestaurantBtn" type="submit"><strong>Search</strong>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
         `
     }
     // empty restaurant_content
