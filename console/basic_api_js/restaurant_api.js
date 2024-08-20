@@ -130,6 +130,27 @@ async function getRestaurantOwnerReport(restaurant_id, is_checked) {
 
 // logic
 function appendRestaurant(postRestaurant) {
+    thead = `
+        <tr>
+        <th data-name="name">Name</th>
+        <th data-name="google_id">Google Name</th>
+        <th data-name="creator_id">Creator ID</th>
+        <th data-name="phone_number">Phone Number</th>
+        <th data-name="address">Address</th>
+        <th data-name="geo_hash">Geo Hash</th>
+        <th data-name="latitude">Latitude</th>
+        <th data-name="longitude">Longitude</th>
+        <th data-name="categories">Categories</th>
+        <th data-name="link">Link</th>
+        <th data-name="id">ID</th>
+        <th data-name="image">Image</th>
+        <th data-name="rating">Rating</th>
+        <th data-name="average_cost">Average Cost</th>
+        <th data-name="create_time">Create Time</th>
+        <th data-name="update_time">Update Time</th>
+        </tr>
+    `
+    $("#restaurantTable thead").append(thead);
     row = "";
     postRestaurant.forEach(element => {
         const imagesHtml = element.images.map(image => `<img src="${image.photo_url}" alt="Image" width="100">`).join('');
@@ -155,7 +176,7 @@ function appendRestaurant(postRestaurant) {
         `
     });
     $("#restaurantTable tbody").append(row);
-    $("#restaurantTable tbody").footable();
+    $("#restaurantTable").footable();
 }
 
 function appendUser(postUser) {
@@ -187,6 +208,7 @@ function appendUser(postUser) {
             <th data-name="is_followee">Is Followee</th>
         </tr>
     `
+
     $("#restaurantTable thead").append(thead);
 
     row = "";
@@ -223,7 +245,7 @@ function appendUser(postUser) {
         `
     });
     $("#restaurantTable tbody").append(row);
-    $("#restaurantTable tbody").footable();
+    $("#restaurantTable").footable();
 }
 
 function appendReport(postReport) {
@@ -309,11 +331,12 @@ function appendReport(postReport) {
         `
     });
     $("#restaurantTable tbody").append(row);
-    $("#restaurantTable tbody").footable();
+    $("#restaurantTable").footable();
 }
 
 
 async function SearchRestaurantByRestaurantId() {
+    $("#restaurantTable thead").empty();
     $("#restaurantTable tbody").empty();
     event.preventDefault();
     const restaurant_id = $("input[name=restaurant_id]").val();
@@ -327,6 +350,7 @@ async function SearchRestaurantByRestaurantId() {
 }
 
 async function SearchRestaurantByOwnerId() {
+    $("#restaurantTable thead").empty();
     $("#restaurantTable tbody").empty();
     event.preventDefault();
     const owner_id = $("input[name=owner_id]").val();
@@ -339,6 +363,7 @@ async function SearchRestaurantByOwnerId() {
 }
 
 async function SearchRestaurantList() {
+    $("#restaurantTable thead").empty();
     $("#restaurantTable tbody").empty();
     event.preventDefault();
     try {
@@ -350,6 +375,7 @@ async function SearchRestaurantList() {
 }
 
 async function SearchRestaurant() {
+    $("#restaurantTable thead").empty();
     $("#restaurantTable tbody").empty();
     event.preventDefault();
     const keyword = $("input[name=keyword]").val();
