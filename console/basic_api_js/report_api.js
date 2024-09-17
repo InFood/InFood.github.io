@@ -1,160 +1,194 @@
-const apiUrl = "https://in-food.herokuapp.com/";
-const sizePerPage = 20;
+const URLcus = "http://infood-backend-python-env.eba-wf3vms2a.ap-northeast-1.elasticbeanstalk.com/";
 
-function OnLoad(){
-}
-
-function getReportOnInput(){
-}
-
-function showReport(reportList){
-    if (reportList.length == 0){
-        var row = $('<tr><td>無資料</td></tr>') 
-        $("#reportTable").find('tbody').append(row);
+// get reports /api/v1/report
+async function getReportList(content_type, content_id, is_checked, reason_type){
+    try {
+        const data = {};
+        if (content_type){
+            data.content_type = content_type;
+        }
+        if (content_id){
+            data.content_id = content_id;
+        }
+        if (is_checked){
+            data.is_checked = is_checked;
+        }
+        if (reason_type){
+            data.reason_type = reason_type;
+        }
+        const response = await $.ajax({
+            url: URLcus + "api/v1/reports/",
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*",
+            },
+            data: data
+        });
+        return response;
     }
-    else{
-        var rows = [];
-        reportList.forEach(report => {
-            var row = $('<tr><td>' + report.createTime.split("T")[0] + ' ' + report.createTime.split("T")[1].split(".")[0]
-                    + '</td><td>' + report.updateTime.split("T")[0] + ' ' + report.updateTime.split("T")[1].split(".")[0]
-                    + '</td><td>' + report.contentId 
-                    + '</td><td>' + report.contentType 
-                    + '</td><td>' + report.reasonType 
-                    + '</td><td>' + report.reason + '</td></tr>') 
-            $("#reportTable").find('tbody').append(row);
-            $('#reportTable').trigger('footable_initialize');
-        });  
-
+    catch (error) {
+        throw error;
     }
-    document.getElementById("searchReportBtn").disabled = false;
 }
 
-function getReport(){
-    var isCheck = document.querySelector('input[name="reportOptionsRadios"]:checked').value;
-    var contentType = document.querySelector('option[name="reportOptionsSelect"]:checked').value;
-    var contentId = document.forms["searchReport"].elements.word.value;
+// get reports by report_id /api/v1/report/{report_id}
+async function getReportByID(report_id){
+    try {
+        const response = await $.ajax({
+            url: URLcus + "api/v1/reports/" + report_id,
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*",
+            },
+        });
+        return response;
+    }
+    catch (error) {
+        throw error;
+    }
+}
+
+// check report by report_id /api/v1/report/{report_id}/check
+async function checkReport(report_id, is_checked){
+    try {
+        const response = await $.ajax({
+            url: URLcus + "api/v1/reports/" + report_id + "/check?is_checked=" + is_checked,
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*",
+            }
+        });
+        return response;
+    }
+    catch (error) {
+        throw error;
+    }
+}
+
+// logic
+function appendReport(postReport) {
+    postReport.forEach(element => {
+        row = `
+            <tr>
+                <td>${element.id}</td>
+                <td>${element.user_id}</td>
+                <td>${element.content_id}</td>
+                <td>${element.content_type}</td>
+                <td>${element.reason_type}</td>
+                <td>${element.reason}</td>
+                <td>${element.create_time}</td>
+                <td>${element.update_time}</td>
+                <td>
+                <label>
+                <input type="checkbox" name="checkbox" id=${element.id} value=${element.is_checked} onClick="onChangeHandler(this.id)"></label>
+                <label>
+                </td>
+            </tr>
+        `
+        $("#reportTable tbody").append(row);
+        $("#reportTable tbody").footable();
+        document.getElementById(element.id).checked = element.is_checked;
+    });
     
-    $("#reportTable").find('tbody').html("");
-    document.getElementById("searchReportBtn").disabled = true;
-    if (contentType == "--"){
-        getReportByIsCheckApi(isCheck).then(reportList=>{
-            showReport(reportList);
-        })
-    }
-    else if(contentId != ""){
-        getReportByContentIdAndContentTypeApi(isCheck, contentId, contentType).then(reportList=>{
-            showReport(reportList);
-        })
-    }
-    else{
-        getReportByContentTypeApi(isCheck, contentType).then(reportList=>{
-            showReport(reportList);
-        })
-    }
-
-    
 }
 
-async function getReportByIsCheckApi(isCheck){
-    var reportList = [];
-    var currentPage = 0;
-    var totalPage = 1;
-    while(currentPage != totalPage){
-        await $.ajax({
-            url: apiUrl + "api/v1/report",
-            context: document.body,
-            method: "GET",
-            data:{
-                "isCheck": isCheck,
-                "page": currentPage,
-                "size": sizePerPage
-                }
-        }).then(res=>{
-            if(res.reportList){
-                reportList = reportList.concat(res.reportList);
-                totalPage = res.totalPage;
-                currentPage = currentPage + 1;
-            }
-        });
+async function SearchReport() {
+    $("#reportTable tbody").empty();
+    event.preventDefault();
+    const content_type = $("input[name=content_type]").val();
+    const content_id = $("input[name=content_id]").val();
+    const is_checked = $("input:radio[name=is_checked]:checked").val();
+    const reason_type = $("input[name=reason_type]").val();
+    try {
+        const response = await getReportList(content_type, content_id, is_checked, reason_type);
+        appendReport(response.reports);
+    } catch (error) {
+        alert(error);
     }
-    return reportList;
 }
 
-async function getReportByContentTypeApi(isCheck,contentType){
-    var reportList = [];
-    var currentPage = 0;
-    var totalPage = 1;
-    while(currentPage != totalPage){
-        await $.ajax({
-            url: apiUrl + "api/v1/report/contentType",
-            context: document.body,
-            method: "GET",
-            data:{
-                "isCheck": isCheck,
-                "contentType": contentType,
-                "page": currentPage,
-                "size": sizePerPage
-                }
-        }).then(res=>{
-            if(res.totalPage != 0){
-                reportList = reportList.concat(res.reportList);
-                totalPage = res.totalPage;
-            }
-            currentPage = currentPage + 1;
-        });
+async function SearchReportByID() {
+    $("#reportTable tbody").empty();
+    event.preventDefault();
+    const report_id = $("input[name=report_id]").val();
+    try {
+        const response = await getReportByID(report_id);
+        appendReport([response]);
+    } catch (error) {
+        alert(error);
     }
-    return reportList;
 }
 
-async function getReportByContentIdAndContentTypeApi(isCheck,contentType){
-    var reportList = [];
-    var currentPage = 0;
-    var totalPage = 1;
-    while(currentPage != totalPage){
-        await $.ajax({
-            url: apiUrl + "api/v1/report/contentType",
-            context: document.body,
-            method: "GET",
-            data:{
-                "isCheck": isCheck,
-                "contentType": contentType,
-                "page": currentPage,
-                "size": sizePerPage
-                }
-        }).then(res=>{
-            if(res.totalPage != 0){
-                reportList = reportList.concat(res.reportList);
-                totalPage = res.totalPage;
-            }
-            currentPage = currentPage + 1;
-        });
+async function onChangeHandler(id) {
+    const is_checked = $('input[id='+id+']:checkbox').is(":checked");
+    try {
+        const response = await checkReport(id, is_checked);
+    } catch (error) {
+        alert(error);
     }
-    return reportList;
 }
 
-async function getReportByContentIdAndContentTypeApi(isCheck, contentId, contentType){
-    var reportList = [];
-    var currentPage = 0;
-    var totalPage = 1;
-    while(currentPage != totalPage){
-        await $.ajax({
-            url: apiUrl + "api/v1/report/content",
-            context: document.body,
-            method: "GET",
-            data:{
-                "isCheck": isCheck,
-                "contentId": contentId,
-                "contentType": contentType,
-                "page": currentPage,
-                "size": sizePerPage
-                }
-        }).then(res=>{
-            if(res.totalPage != 0){
-                reportList = reportList.concat(res.reportList);
-                totalPage = res.totalPage;
-            }
-            currentPage = currentPage + 1;
-        });
+
+
+// reportByChange change the input search by
+function reportByChange() {
+    const reportBy = $('#getReportBy').val();
+    const reportContent = {
+        "ReportList": `
+            <div class="row">
+                <div class="col-sm-12">
+                    <form role="form" name="ReportList" id="searchReport" onsubmit = "SearchReport();return false;">
+                        <label for="content_type">Content Type</label>
+                        <div class="form-group">
+                            <input type="text" name="content_type" placeholder="Search..." class="form-control">
+                        </div>
+                        <label for="content_id">Content ID</label>
+                        <div class="form-group">
+                            <input type="text" name="content_id" placeholder="Search..." class="form-control">
+                        </div>
+                        <label for="is_checked">isCheck</label>
+                        <div class="form-group">
+                            <label>
+                                <input type="radio" value="true" id="isCheckOptionsRadios1" name="is_checked">true</label>
+                            <label>
+                                <input type="radio" value="false" id="isCheckOptionsRadios2" name="is_checked">false</label>
+                                <label>
+                                <input type="radio" checked="" value="" id="isCheckOptionsRadios3" name="is_checked">both</label>
+                        </div>
+                        <label for="reason_type">Reason Type</label>
+                        <div class="form-group">
+                            <input type="text" name="reason_type" placeholder="Search..." class="form-control">
+                        </div>
+                        <div>
+                            <button class="btn btn-sm btn-primary pull-right m-t-n-xs" id="searchReportListrBtn" type="submit"><strong>Search</strong>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        `,
+        "ReportID": `
+        <div class="row">
+            <div class="col-sm-12">
+                <form role="form" name="ReportID" id="searchReportByID" onsubmit = "SearchReportByID();return false;">
+                    <label for="report_id">Report ID</label>
+                    <div class="form-group">
+                        <input type="text" name="report_id" placeholder="Search..." class="form-control">
+                    </div>
+                    <div>
+                        <button class="btn btn-sm btn-primary pull-right m-t-n-xs" id="searchReportByIDrBtn" type="submit"><strong>Search</strong>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    ` 
     }
-    return reportList;
+    // empty report_content
+    $('#report_content').empty();
+    // append report_content
+    $('#report_content').append(reportContent[reportBy]);
 }
