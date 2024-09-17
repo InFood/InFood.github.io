@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <title>Report</title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+
+    <link rel="shortcut icon" href="favicon.ico"> <link href="../css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="../css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="../css/plugins/footable/footable.core.css" rel="stylesheet">
+
+    <link href="../css/animate.css" rel="stylesheet">
+    <link href="../css/style.css?v=4.1.0" rel="stylesheet">
+
+</head>
+
+<body class="gray-bg">
+    <div class="wrapper wrapper-content">
+        <div class="row">
+            <!-- select for search by -->
+            <div class="col-sm-12" style="margin-bottom: 10px;">
+                <select name="getRestaurantReportBy" id="getRestaurantReportBy" class="form-control" onchange="restaurantReportByChange()">
+                    <option value="0">--</option>
+                    <option value="RestaurantOwnerReportList">Restaurant Owner Report List</option>
+                    <option value="ReportID">Report ID</option>
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5 class="col-sm-12 text-center">Restaurant Owner Report</h5>
+                    </div>
+                    <div class="ibox-content" id="restuarant_report_content">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12 table-responsive">
+                <table  id="restaurantReportTable" class="footable table table-stripped toggle-arrow-tiny" data-page-size="5">
+                    <thead>
+                    <tr>
+                        <th data-name="id">ID</th>
+                        <th data-name="restaurant_id">Restaurant ID</th>
+                        <th data-name="user_id">User ID</th>
+                        <th data-name="create_time">Create Time</th>
+                        <th data-name="update_time">Update Time</th>
+                        <th data-name="check">is Checked</th>
+                        <th data-name="fb_id">User FB ID</th>
+                        <th data-name="in_id">User In ID</th>
+                        <th data-name="username">UserName</th>
+                        <th data-name="firebase_id">User Firebase ID</th>
+                        <th data-name="introduction">User Introduction</th>
+                        <th data-name="display_name">User Display Name</th>
+                        <th data-name="birthdate">User Birthdate</th>
+                        <th data-name="email">User Email</th>
+                        <th data-name="gender">User Gender</th>
+                        <th data-name="hometown">User Hometown</th>
+                        <th data-name="phonenumber">User Phonenumber</th>
+                        <th data-name="residence">User Residence</th>
+                        <th data-name="id">User ID</th>
+                        <th data-name="images">User Images</th>
+                        <th data-name="width">User Width</th>
+                        <th data-name="height">User Height</th>
+                        <th data-name="tags">User Tag</th>
+                        <th data-name="create_time">User Create Time</th>
+                        <th data-name="update_time">User Update Time</th>
+                        <th data-name="follower_count">User Follower Count</th>
+                        <th data-name="followee_count">User Followee Count</th>
+                        <th data-name="post_count">User Post Count</th>
+                        <th data-name="is_follower">User Is Follower</th>
+                        <th data-name="is_followee">User Is Followee</th>
+                        <th data-name="is_checked">Is Checked</th>
+                        <th data-name="is_approved">Is Approved</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                    <tfoot>
+                    <tr>
+                        <td colspan="8">
+                            <ul class="pagination pull-right"></ul>
+                        </td>
+                    </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+        
+
+    </div>
+
+    <!-- 全局js -->
+    <script src="../js/jquery.min.js?v=2.1.4"></script>
+    <script src="../js/bootstrap.min.js?v=3.3.6"></script>
+    <script src="../js/jquery.form.js"></script>
+    <script src="../js/plugins/footable/footable.all.min.js"></script>
+
+    <!-- 自定义js -->
+    <script src="../js/content.js?v=1.0.0"></script>
+    <script src="../basic_api_js/restaurant_owner_report_api.js"></script>
+    
+    <script>
+        $(document).ready(function() {
+
+            $('.footable').footable();
+            $('.footable2').footable();
+
+        });
+
+    </script>    
+    
+
+</body>
+
+</html>
