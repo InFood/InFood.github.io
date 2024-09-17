@@ -50,11 +50,28 @@ async function getReportByID(report_id){
     }
 }
 
+// check report by report_id /api/v1/report/{report_id}/check
+async function checkReport(report_id, is_checked){
+    try {
+        const response = await $.ajax({
+            url: URLcus + "api/v1/reports/" + report_id + "/check?is_checked=" + is_checked,
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*",
+            }
+        });
+        return response;
+    }
+    catch (error) {
+        throw error;
+    }
+}
+
 // logic
 function appendReport(postReport) {
-    row = "";
     postReport.forEach(element => {
-        row += `
+        row = `
             <tr>
                 <td>${element.id}</td>
                 <td>${element.user_id}</td>
@@ -62,14 +79,20 @@ function appendReport(postReport) {
                 <td>${element.content_type}</td>
                 <td>${element.reason_type}</td>
                 <td>${element.reason}</td>
-                <td>${element.is_checked}</td>
                 <td>${element.create_time}</td>
                 <td>${element.update_time}</td>
+                <td>
+                <label>
+                <input type="checkbox" name="checkbox" id=${element.id} value=${element.is_checked} onClick="onChangeHandler(this.id)"></label>
+                <label>
+                </td>
             </tr>
         `
+        $("#reportTable tbody").append(row);
+        $("#reportTable tbody").footable();
+        document.getElementById(element.id).checked = element.is_checked;
     });
-    $("#reportTable tbody").append(row);
-    $("#reportTable tbody").footable();
+    
 }
 
 async function SearchReport() {
@@ -94,6 +117,15 @@ async function SearchReportByID() {
     try {
         const response = await getReportByID(report_id);
         appendReport([response]);
+    } catch (error) {
+        alert(error);
+    }
+}
+
+async function onChangeHandler(id) {
+    const is_checked = $('input[id='+id+']:checkbox').is(":checked");
+    try {
+        const response = await checkReport(id, is_checked);
     } catch (error) {
         alert(error);
     }
