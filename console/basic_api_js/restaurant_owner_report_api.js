@@ -93,8 +93,6 @@ async function approveRestaurantReport(restaurant_report_id, is_approved){
             "longitude": document.getElementById("longitude_" + restaurant_report_id).checked,
             "categories": document.getElementById("categories_" + restaurant_report_id).checked,
             "link": document.getElementById("link_" + restaurant_report_id).checked,
-            "rating": document.getElementById("rating_" + restaurant_report_id).checked,
-            "average_cost": document.getElementById("average_cost_" + restaurant_report_id).checked
         }
         const response = await $.ajax({
             url: URLcus + "api/v1/reports/restaurants/" + restaurant_report_id + "?is_approved=" + is_approved,
@@ -274,12 +272,8 @@ function appendReport(postReport) {
                 <td>
                 <label><input type="checkbox" id='link_${element.id}'></label>
                 ${element.link}</td>
-                <td>
-                <label><input type="checkbox" id='rating_${element.id}'></label>
-                ${element.rating}</td>
-                <td>
-                <label><input type="checkbox" id='average_cost_${element.id}'></label>
-                ${element.average_cost}</td>
+                <td>${element.rating}</td>
+                <td>${element.average_cost}</td>
                 <td>${element.create_time}</td>
                 <td>${element.update_time}</td>
                 <td>
@@ -313,8 +307,6 @@ function appendReport(postReport) {
         document.getElementById("longitude_" + element.id).disabled = (element.longitude == null);
         document.getElementById("categories_" + element.id).disabled = (element.categories == null);
         document.getElementById("link_" + element.id).disabled = (element.link == null);
-        document.getElementById("rating_" + element.id).disabled = (element.rating == null);
-        document.getElementById("average_cost_" + element.id).disabled = (element.average_cost == null);
 
     });
 }
